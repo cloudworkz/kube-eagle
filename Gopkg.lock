@@ -100,12 +100,11 @@
   version = "v0.3.5"
 
 [[projects]]
-  digest = "1:ec5ed9e7ac12b35906c2c65e21dd011aa7dd37c3b7248ae37cd8dafdfe8804d4"
+  digest = "1:bb3cc4c1b21ea18cfa4e3e47440fc74d316ab25b0cf42927e8c1274917bd9891"
   name = "github.com/json-iterator/go"
   packages = ["."]
   pruneopts = "UT"
-  revision = "0ac74bba4a81211b28e32ef260c0f16ae41f1377"
-  version = "1.1.1"
+  revision = "f2b4162afba35581b6d4a50d3b8f34e33c144682"
 
 [[projects]]
   digest = "1:edbef42561faa44c19129b68d1e109fbc1647f63239250391eadc8d0e7c9f669"
@@ -140,11 +139,12 @@
   version = "1.0.3"
 
 [[projects]]
-  digest = "1:c3e6c10392207c5b728fb5f9ab234ea8a42413378d29422de59547125f5b473d"
+  digest = "1:e32bdbdb7c377a07a9a46378290059822efdce5c8d96fe71940d87cb4f918855"
   name = "github.com/modern-go/reflect2"
   packages = ["."]
   pruneopts = "UT"
-  revision = "05fbef0ca5da472bbf96c9322b84a53edc03c9fd"
+  revision = "4b7aa43c6742a2c18fdef89dd197aaae7dac7ccd"
+  version = "1.0.1"
 
 [[projects]]
   branch = "master"
@@ -222,17 +222,6 @@
   pruneopts = "UT"
   revision = "583c0c0531f06d5278b7d917446061adc344b5cd"
   version = "v1.0.1"
-
-[[projects]]
-  digest = "1:f23077ad8275f965e666500a7e03e9e4f38e03a8a4e73f7b54b0a5138911d2a9"
-  name = "github.com/v2pro/plz"
-  packages = [
-    "concurrent",
-    "reflect2",
-  ]
-  pruneopts = "UT"
-  revision = "10fc95fad3224a032229e59f6e7023137d82b526"
-  version = "0.9.1"
 
 [[projects]]
   branch = "master"
