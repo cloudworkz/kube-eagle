@@ -1,7 +1,7 @@
 # Kube eagle
 
+<!-- prettier-ignore -->
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/google-cloud-tools/kube-eagle/master/LICENSE)
-
 [![Docker Repository on Quay](https://quay.io/repository/google-cloud-tools/kube-eagle/status "Docker Repository on Quay")](https://quay.io/repository/google-cloud-tools/kube-eagle)
 
 Kube eagle is a prometheus exporter which exports various metrics of kubernetes pod resource requests, limits and it's
