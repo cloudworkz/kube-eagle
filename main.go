@@ -7,12 +7,12 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/google-cloud-tools/kube-eagle/pkg/collectors"
+	"github.com/google-cloud-tools/kube-eagle/pkg/metrics_store"
+	"github.com/google-cloud-tools/kube-eagle/pkg/options"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	log "github.com/sirupsen/logrus"
-	"github.com/weeco/kube-eagle/pkg/collectors"
-	"github.com/weeco/kube-eagle/pkg/metrics_store"
-	"github.com/weeco/kube-eagle/pkg/options"
 )
 
 var (
@@ -29,11 +29,6 @@ func init() {
 	if err != nil {
 		log.Fatal(err, "error parsing env vars into opts")
 	}
-}
-func hea(h http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		h.ServeHTTP(w, r)
-	})
 }
 
 func healthcheck() http.HandlerFunc {
