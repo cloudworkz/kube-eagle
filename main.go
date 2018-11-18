@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/google-cloud-tools/kube-eagle/pkg/collectors"
-	"github.com/google-cloud-tools/kube-eagle/pkg/metrics_store"
 	"github.com/google-cloud-tools/kube-eagle/pkg/options"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/prometheus/client_golang/prometheus/promhttp"

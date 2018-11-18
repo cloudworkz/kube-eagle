@@ -1,4 +1,4 @@
-package metricsstore
+package sink
 
 import "k8s.io/metrics/pkg/apis/metrics/v1beta1"
 
@@ -17,25 +17,28 @@ type ContainerMetrics struct {
 	UsageMemoryBytes     float64
 }
 
-// container resource usage by pod name & container name
+// containerUsageMap returns a map of of maps
+// Where the outer map key is the podname which contains the map of
+// ContainerMetrics (where container name is the key)
+// It basically as a map of ContainerMetrics grouped by (podName, containerName)
 func containerUsageMap() map[string]map[string]v1beta1.ContainerMetrics {
-	containerMetricsByName := make(map[string]map[string]v1beta1.ContainerMetrics)
+	containerUsageByName := make(map[string]map[string]v1beta1.ContainerMetrics)
 
 	for _, podMetrics := range podUsageList.Items {
 		podMetricsMap := make(map[string]v1beta1.ContainerMetrics)
 		for _, containerMetrics := range podMetrics.Containers {
 			podMetricsMap[containerMetrics.Name] = containerMetrics
 		}
-		containerMetricsByName[podMetrics.Name] = podMetricsMap
+		containerUsageByName[podMetrics.Name] = podMetricsMap
 	}
 
-	return containerMetricsByName
+	return containerUsageByName
 }
 
 // BuildContainerMetrics returns all container relevant exported prometheus metrics
 func BuildContainerMetrics() []ContainerMetrics {
 	var containerMetrics []ContainerMetrics
-	podUsageByPodName := containerUsageMap()
+	containerUsageByName := containerUsageMap()
 
 	for _, podInfo := range podList.Items {
 		for _, containerInfo := range podInfo.Spec.Containers {
@@ -50,7 +53,7 @@ func BuildContainerMetrics() []ContainerMetrics {
 			limitMemoryBytes := float64(containerInfo.Resources.Limits.Memory().MilliValue()) / 1000
 
 			// Resources usage
-			containerUsageMetrics := podUsageByPodName[podInfo.Name][containerInfo.Name]
+			containerUsageMetrics := containerUsageByName[podInfo.Name][containerInfo.Name]
 			usageCPUCores := float64(containerUsageMetrics.Usage.Cpu().MilliValue()) / 1000
 			usageMemoryBytes := float64(containerUsageMetrics.Usage.Memory().MilliValue()) / 1000
 

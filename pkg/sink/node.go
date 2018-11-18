@@ -1,25 +1,27 @@
-package metricsstore
+package sink
 
 import "k8s.io/metrics/pkg/apis/metrics/v1beta1"
 
 // NodeMetrics defines the labels and values we expose with prometheus
-type NodeMetrics struct {
-	Node                   string
-	AllocatableCPUCores    float64
-	AllocatableMemoryBytes float64
-	RequestedCPUCores      float64
-	RequestedMemoryBytes   float64
-	LimitCPUCores          float64
-	LimitMemoryBytes       float64
-	UsageCPUCores          float64
-	UsageMemoryBytes       float64
-}
+type {
+	NodeMetrics struct {
+		Node                   string
+		AllocatableCPUCores    float64
+		AllocatableMemoryBytes float64
+		RequestedCPUCores      float64
+		RequestedMemoryBytes   float64
+		LimitCPUCores          float64
+		LimitMemoryBytes       float64
+		UsageCPUCores          float64
+		UsageMemoryBytes       float64
+	}
 
-type nodeResourceDetails struct {
-	cpuCoresRequested    float64
-	memoryBytesRequested float64
-	cpuCoresLimit        float64
-	memoryBytesLimit     float64
+	nodeResourceDetails struct {
+		cpuCoresRequested    float64
+		memoryBytesRequested float64
+		cpuCoresLimit        float64
+		memoryBytesLimit     float64
+	}
 }
 
 func getResourceDetailsByNode() map[string]nodeResourceDetails {

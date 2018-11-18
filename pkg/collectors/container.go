@@ -1,7 +1,7 @@
 package collectors
 
 import (
-	"github.com/google-cloud-tools/kube-eagle/pkg/metrics_store"
+	"github.com/google-cloud-tools/kube-eagle/pkg/sink"
 	"github.com/prometheus/client_golang/prometheus"
 )
 
@@ -83,7 +83,7 @@ func init() {
 
 // UpdateContainerMetrics updates exposed container metrics in prometheus client
 func UpdateContainerMetrics() {
-	containerMetrics := metricsstore.BuildContainerMetrics()
+	containerMetrics := sink.BuildContainerMetrics()
 
 	for _, containerMetric := range containerMetrics {
 		containerLabels := prometheus.Labels{

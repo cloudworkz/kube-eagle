@@ -1,4 +1,4 @@
-package metricsstore
+package sink
 
 import (
 	"os"
@@ -6,6 +6,7 @@ import (
 
 	"k8s.io/client-go/rest"
 
+	"github.com/google-cloud-tools/kube-eagle/pkg/options"
 	log "github.com/sirupsen/logrus"
 	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -13,8 +14,6 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/metrics/pkg/apis/metrics/v1beta1"
 	metrics "k8s.io/metrics/pkg/client/clientset/versioned"
-
-	"github.com/google-cloud-tools/kube-eagle/pkg/options"
 
 	// Needed for GCP auth - only relevant for out of cluster communications (developers)
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
@@ -104,9 +103,9 @@ func BuildNodeMetrics() []NodeMetrics {
 
 // InitKuberneterClient parses kubeconfig and creates kubernetes clientset
 func InitKuberneterClient(opts *options.Options) {
+	var err error
 	if opts.IsInCluster {
 		log.Info("Creating InCluster config to communicate with Kubernetes master")
-		var err error
 		config, err = rest.InClusterConfig()
 		if err != nil {
 			panic(err.Error())
@@ -117,7 +116,6 @@ func InitKuberneterClient(opts *options.Options) {
 		kubeconfigPath := filepath.Join(home, ".kube", "config")
 
 		// use the current context in kubeconfig
-		var err error
 		config, err = clientcmd.BuildConfigFromFlags("", kubeconfigPath)
 		if err != nil {
 			panic(err.Error())
@@ -125,7 +123,6 @@ func InitKuberneterClient(opts *options.Options) {
 	}
 
 	// create the clientset
-	var err error
 	clientset, err = kubernetes.NewForConfig(config)
 	if err != nil {
 		panic(err.Error())
@@ -141,6 +138,7 @@ func InitKuberneterClient(opts *options.Options) {
 func IsClientHealthy() bool {
 	_, err := clientset.CoreV1().Pods(metav1.NamespaceDefault).List(metav1.ListOptions{})
 	if err != nil {
+		log.Warn("Kubernetes client is not healthy. Couldn't list pods in the default namespace.", err.Error())
 		return false
 	}
 
@@ -149,8 +147,14 @@ func IsClientHealthy() bool {
 
 // returns os homedir
 func homeDir() string {
-	if h := os.Getenv("HOME"); h != "" {
-		return h
+	os.Get
+	home := os.Getenv("HOME")
+	if home != "" {
+		return home
 	}
-	return os.Getenv("USERPROFILE") // windows
+	home = os.Getenv("USERPROFILE") // windows
+	if home != "" {
+		return home
+	}
+	log.Fatalf("Couldn't find home directory to look for the kube config.")
 }
