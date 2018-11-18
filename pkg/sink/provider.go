@@ -147,7 +147,6 @@ func IsClientHealthy() bool {
 
 // returns os homedir
 func homeDir() string {
-	os.Get
 	home := os.Getenv("HOME")
 	if home != "" {
 		return home
@@ -157,4 +156,5 @@ func homeDir() string {
 		return home
 	}
 	log.Fatalf("Couldn't find home directory to look for the kube config.")
+	return ""
 }
