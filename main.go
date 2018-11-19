@@ -32,6 +32,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err, "error parsing env vars into opts")
 	}
+	log.Infof("Starting kube eagle v%v", opts.Version)
 
 	go func() {
 		sink.InitKuberneterClient(opts)

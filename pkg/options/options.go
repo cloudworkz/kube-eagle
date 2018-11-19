@@ -7,6 +7,7 @@ package options
 type Options struct {
 	Port        int    `envconfig:"PORT" default:"8080"`
 	IsInCluster bool   `envconfig:"IS_IN_CLUSTER" default:"true"`
+	Version     string `envconfig:"VERSION" default:"unknown version"`
 	Namespace   string `envconfig:"METRICS_NAME" default:"eagle"`
 }
 
