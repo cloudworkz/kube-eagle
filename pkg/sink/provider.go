@@ -1,13 +1,14 @@
 package sink
 
 import (
+	"github.com/google-cloud-tools/kube-eagle/pkg/log"
 	"os"
 	"path/filepath"
+	"time"
 
 	"k8s.io/client-go/rest"
 
 	"github.com/google-cloud-tools/kube-eagle/pkg/options"
-	log "github.com/sirupsen/logrus"
 	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
@@ -30,39 +31,42 @@ var (
 	nodeUsageList *v1beta1.NodeMetricsList
 )
 
-func init() {
-	log.SetFormatter(&log.JSONFormatter{})
-	log.SetOutput(os.Stdout)
-	log.SetLevel(log.InfoLevel)
-}
-
 // Collect gathers all needed metrics and actually fires requests against the kubernetes master
 func Collect() {
 	var err error
+	var errorCount int8
 
+	start := time.Now()
 	// get kubernetes' node metrics
 	nodeList, err = clientset.CoreV1().Nodes().List(metav1.ListOptions{})
 	if err != nil {
-		panic(err.Error())
+		errorCount++
+		log.Warn("Couldn't get nodeList from Kubernetes master", err.Error())
 	}
 
 	// get kubernetes' pod metrics
 	podList, err = clientset.CoreV1().Pods(metav1.NamespaceAll).List(metav1.ListOptions{})
 	if err != nil {
-		panic(err.Error())
+		errorCount++
+		log.Warn("Couldn't get podList from Kubernetes master", err.Error())
 	}
 
 	// get pods' resource usage metrics
 	podUsageList, err = metricsClientset.MetricsV1beta1().PodMetricses(metav1.NamespaceAll).List(metav1.ListOptions{})
 	if err != nil {
-		panic(err.Error())
+		errorCount++
+		log.Warn("Couldn't get podUsageList from Kubernetes master", err.Error())
 	}
 
 	// get nodes' resource usage metrics
 	nodeUsageList, err = metricsClientset.MetricsV1beta1().NodeMetricses().List(metav1.ListOptions{})
 	if err != nil {
-		panic(err.Error())
+		errorCount++
+		log.Warn("Couldn't get nodeUsageList from Kubernetes master", err.Error())
 	}
+	elapsed := time.Since(start)
+	elapsedMs := int64(elapsed / time.Millisecond)
+	log.Infof("Collected metrics with %v errors from Kubernetes cluster within %vms", errorCount, elapsedMs)
 }
 
 // BuildNodeMetrics returns all node relevant exposed prometheus metrics
@@ -125,12 +129,12 @@ func InitKuberneterClient(opts *options.Options) {
 	// create the clientset
 	clientset, err = kubernetes.NewForConfig(config)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal("Error while creating kubernetes clientSet", err.Error())
 	}
 
 	metricsClientset, err = metrics.NewForConfig(config)
 	if err != nil {
-		panic(err)
+		log.Fatal("Error while creating metrics clientSet", err.Error())
 	}
 }
 
@@ -155,6 +159,6 @@ func homeDir() string {
 	if home != "" {
 		return home
 	}
-	log.Fatalf("Couldn't find home directory to look for the kube config.")
+	log.Fatal("Couldn't find home directory to look for the kube config.")
 	return ""
 }

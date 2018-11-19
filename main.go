@@ -3,37 +3,21 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"os"
 	"strconv"
 	"time"
 
 	"github.com/google-cloud-tools/kube-eagle/pkg/collectors"
+	"github.com/google-cloud-tools/kube-eagle/pkg/log"
 	"github.com/google-cloud-tools/kube-eagle/pkg/options"
+	"github.com/google-cloud-tools/kube-eagle/pkg/sink"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	log "github.com/sirupsen/logrus"
 )
-
-var (
-	opts *options.Options
-)
-
-func init() {
-	log.SetFormatter(&log.JSONFormatter{})
-	log.SetOutput(os.Stdout)
-	log.SetLevel(log.InfoLevel)
-
-	opts = options.NewOptions()
-	err := envconfig.Process("", opts)
-	if err != nil {
-		log.Fatal(err, "error parsing env vars into opts")
-	}
-}
 
 func healthcheck() http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		log.Debug("Healthcheck has been called")
-		isKubernetesClientHealthy := metricsstore.IsClientHealthy()
+		isKubernetesClientHealthy := sink.IsClientHealthy()
 		if isKubernetesClientHealthy == true {
 			w.Write([]byte("Ok"))
 		} else {
@@ -43,11 +27,17 @@ func healthcheck() http.HandlerFunc {
 }
 
 func main() {
+	opts := options.NewOptions()
+	err := envconfig.Process("", opts)
+	if err != nil {
+		log.Fatal(err, "error parsing env vars into opts")
+	}
+
 	go func() {
-		metricsstore.InitKuberneterClient(opts)
+		sink.InitKuberneterClient(opts)
 		// Collect stats every 10s
 		for {
-			metricsstore.Collect()
+			sink.Collect()
 			collectors.UpdateContainerMetrics()
 			collectors.UpdateNodeMetrics()
 			time.Sleep(10 * time.Second)
