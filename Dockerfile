@@ -11,5 +11,5 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build -a -installsuf
 FROM scratch
 COPY --from=builder /go/bin/kube-eagle /go/bin/kube-eagle
 
-ENV VERSION 1.0.1
+ENV VERSION 1.0.2
 ENTRYPOINT ["/go/bin/kube-eagle"]
