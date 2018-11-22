@@ -27,7 +27,26 @@ Make sure the pod has a service account attached that has the required permissio
 
 ### Grafana dashboard
 
-Work in progress
+We are maintaining the grafana dashboard in this seperate repository: https://github.com/google-cloud-tools/kube-eagle-grafana-dashboard
+
+## Exposed metrics
+
+| Metric name                                        | Description                                                         |
+| -------------------------------------------------- | ------------------------------------------------------------------- |
+| eagle_node_resource_allocatable_cpu_cores          | Allocatable CPU cores in Kubernetes                                 |
+| eagle_node_resource_allocatable_memory_bytes       | Allocatable RAM in Kubernetes in bytes                              |
+| eagle_node_resource_limits_cpu_cores               | Total limit CPU cores of all specified pod resources on a node      |
+| eagle_node_resource_limits_memory_bytes            | Total limit of RAM bytes of all specified pod resources on a node   |
+| eagle_node_resource_requests_cpu_cores             | Total request of CPU cores of all specified pod resources on a node |
+| eagle_node_resource_requests_memory_bytes          | Total request of RAM bytes all specified pod resources on a node    |
+| eagle_node_resource_usage_cpu_cores                | Total number of used CPU cores on a node                            |
+| eagle_node_resource_usage_memory_bytes             | Total number of RAM bytes used on a node                            |
+| eagle_pod_container_resource_limits_cpu_cores      | Limit of CPU cores set for a specific container                     |
+| eagle_pod_container_resource_limits_memory_bytes   | Limit of RAM bytes set for a specific container                     |
+| eagle_pod_container_resource_requests_cpu_cores    | Requested CPU cores set for a specific container                    |
+| eagle_pod_container_resource_requests_memory_bytes | Requested RAM bytes set for a specific container                    |
+| eagle_pod_container_resource_usage_cpu_cores       | CPU cores in use by a specific container                            |
+| eagle_pod_container_resource_usage_memory_bytes    | RAM bytes in use by a specific container                            |
 
 ## How does it work
 
