@@ -106,6 +106,15 @@ func init() {
 // UpdateNodeMetrics updates exposed node metrics in prometheus client
 func UpdateNodeMetrics() {
 	nodeMetrics := sink.BuildNodeMetrics()
+	// reset all prometheus metrics so that old metrics don't appear anymore
+	allocatableNodeCPUCoresGauge.Reset()
+	allocatableNodeRAMBytesGauge.Reset()
+	requestedNodeCPUCoresGauge.Reset()
+	requestedNodeRAMBytesGauge.Reset()
+	limitNodeCPUCoresGauge.Reset()
+	limitNodeRAMBytesGauge.Reset()
+	usageNodeCPUCoresGauge.Reset()
+	usageNodeRAMBytesGauge.Reset()
 
 	for _, nodeMetric := range nodeMetrics {
 		nodeLabels := prometheus.Labels{

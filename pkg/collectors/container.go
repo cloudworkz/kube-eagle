@@ -85,6 +85,13 @@ func init() {
 func UpdateContainerMetrics() {
 	containerMetrics := sink.BuildContainerMetrics()
 
+	requestedContainerCPUCoresGauge.Reset()
+	requestedContainerRAMBytesGauge.Reset()
+	limitContainerCPUCoresGauge.Reset()
+	limitContainerRAMBytesGauge.Reset()
+	usageContainerCPUCoresGauge.Reset()
+	usageContainerRAMBytesGauge.Reset()
+
 	for _, containerMetric := range containerMetrics {
 		containerLabels := prometheus.Labels{
 			"node":      containerMetric.Node,
