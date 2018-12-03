@@ -1,6 +1,7 @@
 package sink
 
 import "k8s.io/metrics/pkg/apis/metrics/v1beta1"
+import corev1 "k8s.io/api/core/v1"
 
 // NodeMetrics defines the labels and values we expose with prometheus
 type NodeMetrics struct {
@@ -28,8 +29,14 @@ func getResourceDetailsByNode() map[string]nodeResourceDetails {
 	// iterate through all pod definitions to aggregate pods' resource requests and limits by node
 	for _, podInfo := range podList.Items {
 		nodeName := podInfo.Spec.NodeName
+
+		// skip not running pods (e. g. failed/succeeded jobs, evicted pods etc.)
+		podPhase := podInfo.Status.Phase
+		if podPhase == corev1.PodFailed || podPhase == corev1.PodSucceeded {
+			continue
+		}
+
 		for _, containerInfo := range podInfo.Spec.Containers {
-			// TODO: Add container status as label
 			requestedCPUCores := float64(containerInfo.Resources.Requests.Cpu().MilliValue()) / 1000
 			requestedMemoryBytes := float64(containerInfo.Resources.Requests.Memory().MilliValue()) / 1000
 			limitCPUCores := float64(containerInfo.Resources.Limits.Cpu().MilliValue()) / 1000
