@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	labelsContainers = []string{"node", "container", "pod", "qos", "namespace"}
+	labelsContainers = []string{"node", "container", "pod", "qos", "namespace", "phase"}
 	namespace        = "eagle"
 
 	// resources requested
@@ -99,6 +99,7 @@ func UpdateContainerMetrics() {
 			"qos":       containerMetric.Qos,
 			"pod":       containerMetric.Pod,
 			"namespace": containerMetric.Namespace,
+			"phase":     string(containerMetric.Phase),
 		}
 
 		requestedContainerCPUCoresGauge.With(containerLabels).Set(containerMetric.RequestedCPUCores)

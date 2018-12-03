@@ -1,6 +1,7 @@
 package sink
 
 import "k8s.io/metrics/pkg/apis/metrics/v1beta1"
+import corev1 "k8s.io/api/core/v1"
 
 // ContainerMetrics defines the labels and values we expose with prometheus
 type ContainerMetrics struct {
@@ -8,6 +9,8 @@ type ContainerMetrics struct {
 	Container            string
 	Pod                  string
 	Qos                  string
+	Phase                corev1.PodPhase
+	AppLabel             string
 	Namespace            string
 	RequestedCPUCores    float64
 	RequestedMemoryBytes float64
@@ -41,7 +44,8 @@ func BuildContainerMetrics() []ContainerMetrics {
 	containerUsageByName := containerUsageMap()
 
 	for _, podInfo := range podList.Items {
-		for _, containerInfo := range podInfo.Spec.Containers {
+		containers := append(podInfo.Spec.Containers, podInfo.Spec.InitContainers...)
+		for _, containerInfo := range containers {
 			qos := string(podInfo.Status.QOSClass)
 
 			// Resources requested
@@ -63,6 +67,7 @@ func BuildContainerMetrics() []ContainerMetrics {
 				Container:            containerInfo.Name,
 				Pod:                  podInfo.Name,
 				Qos:                  qos,
+				Phase:                podInfo.Status.Phase,
 				Namespace:            podInfo.Namespace,
 				RequestedCPUCores:    requestedCPUCores,
 				RequestedMemoryBytes: requestedMemoryBytes,
