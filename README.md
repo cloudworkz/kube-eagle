@@ -30,11 +30,9 @@ Make sure the pod has a service account attached that has the required permissio
 
 ### Configure Grafana dashboard
 
-1. Import the dashboard: Find the grafana dashboard (JSON model) in the `/grafana` folder located in this repository. To import the dashboard open Grafana in your browser, go to Dashboards -> Manage -> + Import and paste the JSON content of this JSON file.
+1. Import the dashboard: https://grafana.com/dashboards/9871 (Dashboard ID 9871)
 
-2. Configure Dashboard variables: Open the Kube Eagle dashboard and click the gear icon at the top to configure the dashboard. On the left menu you should see a setting called "Variables". Edit the node_pool variable and put the names of your kubernetes nodepools in there.
-
-3. Patch all charts: Every chart in the dashboard has a label filter like this: `node=~"gke-brawlstats-k8s-$node_pool.*"`. The grafana dashboard has been exported from a small real world project, which runs in Google's Kubernetes Engine. The cluster name is `brawlstats-k8s` and the `gke-` prefix has been added by Google to all names. You must update the `node` filters in all graphs and tables.
+2. Configure Dashboard variables: Open the Kube Eagle dashboard and click the gear icon at the top to configure the dashboard. On the left menu you should see a setting called "Variables". Since we don't have an explicit label for nodepools (yet) we rely on given node names which usually carry the nodepool name in it. Thus provide the full "node name prefix" including the nodepool name (e. g. `gke-brawlstats-k8s-highmem-.*` where as highmem is the nodepool name).
 
 ## Exposed metrics
 
