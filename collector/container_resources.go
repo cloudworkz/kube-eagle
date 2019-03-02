@@ -29,7 +29,7 @@ func init() {
 
 func newContainerResourcesCollector(opts *options.Options) (Collector, error) {
 	subsystem := "pod_container_resource"
-	labels := []string{"pod", "container", "qos", "phase", "namespace"}
+	labels := []string{"pod", "container", "qos", "phase", "namespace", "node"}
 
 	return &containerResourcesCollector{
 		// Prometheus metrics
@@ -113,7 +113,7 @@ func (c *containerResourcesCollector) updateMetrics(ch chan<- prometheus.Metric)
 	for _, containerMetrics := range containerMetricses {
 		cm := *containerMetrics
 		log.Debugf("Test")
-		labelValues := []string{cm.Pod, cm.Container, cm.Qos, cm.Phase, cm.Namespace}
+		labelValues := []string{cm.Pod, cm.Container, cm.Qos, cm.Phase, cm.Namespace, cm.Node}
 		ch <- prometheus.MustNewConstMetric(c.requestCPUCoresDesc, prometheus.GaugeValue, cm.RequestCPUCores, labelValues...)
 		ch <- prometheus.MustNewConstMetric(c.requestMemoryBytesDesc, prometheus.GaugeValue, cm.RequestMemoryBytes, labelValues...)
 		ch <- prometheus.MustNewConstMetric(c.limitCPUCoresDesc, prometheus.GaugeValue, cm.LimitCPUCores, labelValues...)
