@@ -53,15 +53,13 @@ We are maintaining the grafana dashboard in this seperate repository: https://gi
 
 ## How does it work
 
-Kube eagle talks to the kubernetes api server using the official kubernetes go client. Every 10s we perform four requests - pod
-& node resource objects as well as the pod & node usage list. We aggregate and enrich some of the data so that you can easily
-build dashboards matching the purpose of optimizing the resource allocation.
+Kube eagle talks to the kubernetes master(s) using the official kubernetes go client. Every time the `/metrics` endpoint is hit Kube Eagle sends requests to the k8s masters to get pod & node resource objects as well as the pod & node usage list. Kube eagle aggregates and brings together the collected data so that they can be attached as prometheus labels. This way it's easy to create grafana dashboards which help you to optimize your resource allocations.
 
 ## License
 
 MIT License
 
-Copyright (c) 2018
+Copyright (c) 2019
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
