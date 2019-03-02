@@ -20,10 +20,13 @@ Make sure the pod has a service account attached that has the required permissio
 
 ### Environment variables
 
-| Variable name | Description                                                                           | Default |
-| ------------- | ------------------------------------------------------------------------------------- | ------- |
-| PORT          | Port to listen on for the prometheus exporter                                         | 8080    |
-| IS_IN_CLUSTER | Whether to use in cluster communication or to look for a kubeconfig in home directory | true    |
+| Variable name     | Description                                                                           | Default |
+| ----------------- | ------------------------------------------------------------------------------------- | ------- |
+| TELEMETRY_HOST    | Host to bind socket on for the prometheus exporter                                    | 0.0.0.0 |
+| TELEMETRY_PORT    | Port to listen on for the prometheus exporter                                         | 8080    |
+| METRICS_NAMESPACE | Prefix of exposed prometheus metrics                                                  | eagle   |
+| IS_IN_CLUSTER     | Whether to use in cluster communication or to look for a kubeconfig in home directory | true    |
+| LOG_LEVEL         | Logger's log granularity (debug, info, warn, error, fatal, panic)                     | info    |
 
 ### Grafana dashboard
 
