@@ -28,9 +28,13 @@ Make sure the pod has a service account attached that has the required permissio
 | IS_IN_CLUSTER     | Whether to use in cluster communication or to look for a kubeconfig in home directory | true    |
 | LOG_LEVEL         | Logger's log granularity (debug, info, warn, error, fatal, panic)                     | info    |
 
-### Grafana dashboard
+### Configure Grafana dashboard
 
-We are maintaining the grafana dashboard in this seperate repository: https://github.com/google-cloud-tools/kube-eagle-grafana-dashboard
+1. Import the dashboard: Find the grafana dashboard (JSON model) in the `/grafana` folder located in this repository. To import the dashboard open Grafana in your browser, go to Dashboards -> Manage -> + Import and paste the JSON content of this JSON file.
+
+2. Configure Dashboard variables: Open the Kube Eagle dashboard and click the gear icon at the top to configure the dashboard. On the left menu you should see a setting called "Variables". Edit the node_pool variable and put the names of your kubernetes nodepools in there.
+
+3. Patch all charts: Every chart in the dashboard has a label filter like this: `node=~"gke-brawlstats-k8s-$node_pool.*"`. The grafana dashboard has been exported from a small real world project, which runs in Google's Kubernetes Engine. The cluster name is `brawlstats-k8s` and the `gke-` prefix has been added by Google to all names. You must update the `node` filters in all graphs and tables.
 
 ## Exposed metrics
 
