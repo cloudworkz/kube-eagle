@@ -108,6 +108,9 @@ func (c *Client) NodeMetricses() (*v1beta1.NodeMetricsList, error) {
 func (c *Client) IsHealthy() bool {
 	_, err := c.apiClient.CoreV1().Pods(metav1.NamespaceAll).List(metav1.ListOptions{})
 	if err != nil {
+		log.WithFields(log.Fields{
+			"error": err.Error(),
+		}).Error("kubernetes client is not healthy")
 		return false
 	}
 
