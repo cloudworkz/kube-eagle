@@ -3,6 +3,7 @@
 <!-- prettier-ignore -->
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/google-cloud-tools/kube-eagle/master/LICENSE)
 [![Docker Repository on Quay](https://quay.io/repository/google-cloud-tools/kube-eagle/status "Docker Repository on Quay")](https://quay.io/repository/google-cloud-tools/kube-eagle)
+[![Go Report Card](https://goreportcard.com/badge/github.com/google-cloud-tools/kube-eagle)](https://goreportcard.com/report/github.com/google-cloud-tools/kube-eagle)
 
 Kube eagle is a prometheus exporter which exports various metrics of kubernetes pod resource requests, limits and it's actual usages. It was created with the purpose to provide a better overview of your kubernetes cluster resources, so that you can optimize the resource allocation. You can easily build, or use our default grafana dashboard which will help you to achieve this goal:
 
