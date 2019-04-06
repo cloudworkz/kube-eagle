@@ -15,6 +15,8 @@ Simply deploy a pod which runs kube-eagle inside the kubernetes cluster you woul
 
 Kube eagle helm chart: https://github.com/google-cloud-tools/kube-eagle-helm-chart
 
+**Note:** [Metrics-server](https://github.com/kubernetes-incubator/metrics-server) is a prerequisite for Kube Eagle to work. Most managed Kubernetes clusters come with metrics-server installed by default.
+
 ### Required permissions
 
 Make sure the pod has a service account attached that has the required permissions. You can use our helm chart which is capable of creating the service account along with the required ClusterRole and ClusterRoleBinding.
