@@ -13,9 +13,9 @@ Kube eagle is a prometheus exporter which exports various metrics of kubernetes 
 
 Simply deploy a pod which runs kube-eagle inside the kubernetes cluster you would like to monitor. We recommend using our provided helm chart to deploy kube eagle in your cluster:
 
-Kube eagle helm chart: https://github.com/google-cloud-tools/kube-eagle-helm-chart
+Kube eagle helm chart: https://github.com/cloudworkz/kube-eagle-helm-chart
 
-**Note:** [Metrics-server](https://github.com/kubernetes-incubator/metrics-server) is a prerequisite for Kube Eagle to work. Most managed Kubernetes clusters come with metrics-server installed by default.
+**Note:** [Metrics-server](https://github.com/kubernetes-incubator/metrics-server) is a prerequisite for Kube Eagle to work. Most managed Kubernetes clusters come with metrics-server installed by default - you can find the associated helm chart in the helm [stable repo](https://github.com/helm/charts/tree/master/stable/metrics-server).
 
 ### Required permissions
 
