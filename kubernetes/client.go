@@ -2,6 +2,9 @@ package kubernetes
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
+
 	"github.com/google-cloud-tools/kube-eagle/options"
 	log "github.com/sirupsen/logrus"
 	corev1 "k8s.io/api/core/v1"
@@ -12,8 +15,6 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	v1beta1 "k8s.io/metrics/pkg/apis/metrics/v1beta1"
 	metrics "k8s.io/metrics/pkg/client/clientset/versioned"
-	"os"
-	"path/filepath"
 )
 
 // Client provides methods to get all required metrics from Kubernetes
@@ -106,7 +107,7 @@ func (c *Client) NodeMetricses() (*v1beta1.NodeMetricsList, error) {
 
 // IsHealthy returns whether the kubernetes client is able to get a list of all pods
 func (c *Client) IsHealthy() bool {
-	_, err := c.apiClient.CoreV1().Pods(metav1.NamespaceAll).List(metav1.ListOptions{})
+	_, err := c.apiClient.CoreV1().Pods(metav1.NamespaceDefault).List(metav1.ListOptions{})
 	if err != nil {
 		log.WithFields(log.Fields{
 			"error": err.Error(),
