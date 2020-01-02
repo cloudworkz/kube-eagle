@@ -50,12 +50,12 @@ Make sure the pod has a service account attached that has the required permissio
 | eagle_node_resource_usage_cpu_cores | Total number of used CPU cores on a node |
 | eagle_node_resource_usage_memory_bytes | Total number of RAM bytes used on a node |
 | eagle_node_resource_usage_memory_bytes | Total number of RAM bytes used on a node |
+| eagle_node_resource_usage_pod_count | Total number of running pods for each kubernetes node |
 | eagle_pod_container_resource_limits_cpu_cores | Limit of CPU cores set for a specific container |
 | eagle_pod_container_resource_limits_memory_bytes | Limit of RAM bytes set for a specific container |
 | eagle_pod_container_resource_requests_cpu_cores | Requested CPU cores set for a specific container |
 | eagle_pod_container_resource_requests_memory_bytes | Requested RAM bytes set for a specific container |
 | eagle_pod_container_resource_usage_cpu_cores | CPU cores in use by a specific container |
-| eagle_node_resource_usage_pod_count | Total number of running pods for each kubernetes node |
 
 ## How does it work
 
