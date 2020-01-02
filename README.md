@@ -23,13 +23,13 @@ Make sure the pod has a service account attached that has the required permissio
 
 ### Environment variables
 
-| Variable name     | Description                                                                           | Default |
-| ----------------- | ------------------------------------------------------------------------------------- | ------- |
-| TELEMETRY_HOST    | Host to bind socket on for the prometheus exporter                                    | 0.0.0.0 |
-| TELEMETRY_PORT    | Port to listen on for the prometheus exporter                                         | 8080    |
-| METRICS_NAMESPACE | Prefix of exposed prometheus metrics                                                  | eagle   |
-| IS_IN_CLUSTER     | Whether to use in cluster communication or to look for a kubeconfig in home directory | true    |
-| LOG_LEVEL         | Logger's log granularity (debug, info, warn, error, fatal, panic)                     | info    |
+| Variable name | Description | Default |
+| --- | --- | --- |
+| TELEMETRY_HOST | Host to bind socket on for the prometheus exporter | 0.0.0.0 |
+| TELEMETRY_PORT | Port to listen on for the prometheus exporter | 8080 |
+| METRICS_NAMESPACE | Prefix of exposed prometheus metrics | eagle |
+| IS_IN_CLUSTER | Whether to use in cluster communication or to look for a kubeconfig in home directory | true |
+| LOG_LEVEL | Logger's log granularity (debug, info, warn, error, fatal, panic) | info |
 
 ### Configure Grafana dashboard
 
@@ -39,22 +39,23 @@ Make sure the pod has a service account attached that has the required permissio
 
 ## Exposed metrics
 
-| Metric name                                        | Description                                                         |
-| -------------------------------------------------- | ------------------------------------------------------------------- |
-| eagle_node_resource_allocatable_cpu_cores          | Allocatable CPU cores in Kubernetes                                 |
-| eagle_node_resource_allocatable_memory_bytes       | Allocatable RAM in Kubernetes in bytes                              |
-| eagle_node_resource_limits_cpu_cores               | Total limit CPU cores of all specified pod resources on a node      |
-| eagle_node_resource_limits_memory_bytes            | Total limit of RAM bytes of all specified pod resources on a node   |
-| eagle_node_resource_requests_cpu_cores             | Total request of CPU cores of all specified pod resources on a node |
-| eagle_node_resource_requests_memory_bytes          | Total request of RAM bytes all specified pod resources on a node    |
-| eagle_node_resource_usage_cpu_cores                | Total number of used CPU cores on a node                            |
-| eagle_node_resource_usage_memory_bytes             | Total number of RAM bytes used on a node                            |
-| eagle_pod_container_resource_limits_cpu_cores      | Limit of CPU cores set for a specific container                     |
-| eagle_pod_container_resource_limits_memory_bytes   | Limit of RAM bytes set for a specific container                     |
-| eagle_pod_container_resource_requests_cpu_cores    | Requested CPU cores set for a specific container                    |
-| eagle_pod_container_resource_requests_memory_bytes | Requested RAM bytes set for a specific container                    |
-| eagle_pod_container_resource_usage_cpu_cores       | CPU cores in use by a specific container                            |
-| eagle_pod_container_resource_usage_memory_bytes    | RAM bytes in use by a specific container                            |
+| Metric name | Description |
+| --- | --- |
+| eagle_node_resource_allocatable_cpu_cores | Allocatable CPU cores in Kubernetes |
+| eagle_node_resource_allocatable_memory_bytes | Allocatable RAM in Kubernetes in bytes |
+| eagle_node_resource_limits_cpu_cores | Total limit CPU cores of all specified pod resources on a node |
+| eagle_node_resource_limits_memory_bytes | Total limit of RAM bytes of all specified pod resources on a node |
+| eagle_node_resource_requests_cpu_cores | Total request of CPU cores of all specified pod resources on a node |
+| eagle_node_resource_requests_memory_bytes | Total request of RAM bytes all specified pod resources on a node |
+| eagle_node_resource_usage_cpu_cores | Total number of used CPU cores on a node |
+| eagle_node_resource_usage_memory_bytes | Total number of RAM bytes used on a node |
+| eagle_node_resource_usage_memory_bytes | Total number of RAM bytes used on a node |
+| eagle_pod_container_resource_limits_cpu_cores | Limit of CPU cores set for a specific container |
+| eagle_pod_container_resource_limits_memory_bytes | Limit of RAM bytes set for a specific container |
+| eagle_pod_container_resource_requests_cpu_cores | Requested CPU cores set for a specific container |
+| eagle_pod_container_resource_requests_memory_bytes | Requested RAM bytes set for a specific container |
+| eagle_pod_container_resource_usage_cpu_cores | CPU cores in use by a specific container |
+| eagle_node_resource_usage_pod_count | Total number of running pods for each kubernetes node |
 
 ## How does it work
 
@@ -66,20 +67,8 @@ MIT License
 
 Copyright (c) 2019
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
