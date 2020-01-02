@@ -28,6 +28,7 @@ type nodeResourcesCollector struct {
 	// Resource usage
 	usageCPUCoresDesc    *prometheus.Desc
 	usageMemoryBytesDesc *prometheus.Desc
+	usagePodCount        *prometheus.Desc
 }
 
 func init() {
@@ -89,6 +90,12 @@ func newNodeResourcesCollector(opts *options.Options) (Collector, error) {
 		usageMemoryBytesDesc: prometheus.NewDesc(
 			prometheus.BuildFQName(opts.Namespace, subsystem, "usage_memory_bytes"),
 			"Total number of RAM bytes used on a node",
+			labels,
+			prometheus.Labels{},
+		),
+		usagePodCount: prometheus.NewDesc(
+			prometheus.BuildFQName(opts.Namespace, subsystem, "usage_pod_count"),
+			"Total number of running pods for each kubernetes node",
 			labels,
 			prometheus.Labels{},
 		),
@@ -163,6 +170,7 @@ func (c *nodeResourcesCollector) updateMetrics(ch chan<- prometheus.Metric) erro
 		ch <- prometheus.MustNewConstMetric(c.requestMemoryBytesDesc, prometheus.GaugeValue, float64(podMetrics.requestedMemoryBytes), n.Name)
 		ch <- prometheus.MustNewConstMetric(c.limitCPUCoresDesc, prometheus.GaugeValue, podMetrics.limitCPUCores, n.Name)
 		ch <- prometheus.MustNewConstMetric(c.limitMemoryBytesDesc, prometheus.GaugeValue, float64(podMetrics.limitMemoryBytes), n.Name)
+		ch <- prometheus.MustNewConstMetric(c.usagePodCount, prometheus.GaugeValue, float64(podMetrics.podCount), n.Name)
 	}
 
 	return nil
@@ -194,13 +202,15 @@ func getAggregatedPodMetricsByNodeName(pods *corev1.PodList) map[string]aggregat
 	// Iterate through all pod definitions to sum and group pods' resource requests and limits by node name
 	for _, podInfo := range pods.Items {
 		nodeName := podInfo.Spec.NodeName
-		podCount := podMetrics[nodeName].podCount + 1
 
 		// skip not running pods (e. g. failed/succeeded jobs, evicted pods etc.)
 		podPhase := podInfo.Status.Phase
 		if podPhase == corev1.PodFailed || podPhase == corev1.PodSucceeded {
 			continue
 		}
+
+		// Don't increment this counter for failed / non running pods
+		podCount := podMetrics[nodeName].podCount + 1
 
 		for _, c := range podInfo.Spec.Containers {
 			requestedCPUCores := float64(c.Resources.Requests.Cpu().MilliValue()) / 1000
