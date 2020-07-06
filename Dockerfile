@@ -1,5 +1,5 @@
 # build image
-FROM golang:1.13-alpine as builder
+FROM golang:1.14-alpine as builder
 RUN apk update && apk add git ca-certificates
 
 WORKDIR /app
@@ -11,5 +11,5 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o /go/
 FROM scratch
 COPY --from=builder /go/bin/kube-eagle /go/bin/kube-eagle
 
-ENV VERSION 1.1.3
+ENV VERSION 1.1.4
 ENTRYPOINT ["/go/bin/kube-eagle"]
