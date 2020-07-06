@@ -1,6 +1,6 @@
 module github.com/google-cloud-tools/kube-eagle
 
-go 1.12
+go 1.14
 
 require (
 	github.com/gophercloud/gophercloud v0.6.0 // indirect
