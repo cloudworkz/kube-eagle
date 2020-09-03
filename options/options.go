@@ -13,9 +13,10 @@ type Options struct {
 	// Host - Host to bind socket on for the prometheus exporter
 	// Port - Port to listen on for the prometheus exporter
 	// Namespace - Prefix of exposed prometheus metrics
-	Host      string `envconfig:"TELEMETRY_HOST" default:"0.0.0.0"`
-	Port      int    `envconfig:"TELEMETRY_PORT" default:"8080"`
-	Namespace string `envconfig:"METRICS_NAMESPACE" default:"eagle"`
+	Host         string `envconfig:"TELEMETRY_HOST" default:"0.0.0.0"`
+	Port         int    `envconfig:"TELEMETRY_PORT" default:"8080"`
+	Namespace    string `envconfig:"METRICS_NAMESPACE" default:"eagle"`
+	EnableLabels bool   `envconfig:"ENABLE_LABELS" default:"false"`
 
 	// Logger
 	// LogLevel - Logger's log granularity (debug, info, warn, error, fatal, panic)

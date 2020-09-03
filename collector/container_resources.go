@@ -6,6 +6,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	corev1 "k8s.io/api/core/v1"
 	v1beta1 "k8s.io/metrics/pkg/apis/metrics/v1beta1"
+	"strings"
 	"sync"
 )
 
@@ -27,9 +28,17 @@ func init() {
 	registerCollector("container_resources", newContainerResourcesCollector)
 }
 
+var labels []string
+
 func newContainerResourcesCollector(opts *options.Options) (Collector, error) {
 	subsystem := "pod_container_resource"
-	labels := []string{"pod", "container", "qos", "phase", "namespace", "node"}
+
+	// Determine whether to open labels
+	if opts.EnableLabels {
+		labels = []string{"pod", "labels", "container", "qos", "phase", "namespace", "node"}
+	} else {
+		labels = []string{"pod", "container", "qos", "phase", "namespace", "node"}
+	}
 
 	return &containerResourcesCollector{
 		// Prometheus metrics
@@ -111,9 +120,14 @@ func (c *containerResourcesCollector) updateMetrics(ch chan<- prometheus.Metric)
 	containerMetricses := buildEnrichedContainerMetricses(podList, podMetricses)
 
 	for _, containerMetrics := range containerMetricses {
+		var labelValues []string
 		cm := *containerMetrics
 		log.Debugf("Test")
-		labelValues := []string{cm.Pod, cm.Container, cm.Qos, cm.Phase, cm.Namespace, cm.Node}
+		labelValues = []string{cm.Pod, cm.Container, cm.Qos, cm.Phase, cm.Namespace, cm.Node}
+		// Determine whether the array contains labels
+		if itemExists(labels, "labels") {
+			labelValues = []string{cm.Pod, cm.Labels, cm.Container, cm.Qos, cm.Phase, cm.Namespace, cm.Node}
+		}
 		ch <- prometheus.MustNewConstMetric(c.requestCPUCoresDesc, prometheus.GaugeValue, cm.RequestCPUCores, labelValues...)
 		ch <- prometheus.MustNewConstMetric(c.requestMemoryBytesDesc, prometheus.GaugeValue, cm.RequestMemoryBytes, labelValues...)
 		ch <- prometheus.MustNewConstMetric(c.limitCPUCoresDesc, prometheus.GaugeValue, cm.LimitCPUCores, labelValues...)
@@ -121,13 +135,13 @@ func (c *containerResourcesCollector) updateMetrics(ch chan<- prometheus.Metric)
 		ch <- prometheus.MustNewConstMetric(c.usageCPUCoresDesc, prometheus.GaugeValue, cm.UsageCPUCores, labelValues...)
 		ch <- prometheus.MustNewConstMetric(c.usageMemoryBytesDesc, prometheus.GaugeValue, cm.UsageMemoryBytes, labelValues...)
 	}
-
 	return nil
 }
 
 type enrichedContainerMetricses struct {
 	Node               string
 	Pod                string
+	Labels             string
 	Container          string
 	Qos                string
 	Phase              string
@@ -161,6 +175,14 @@ func buildEnrichedContainerMetricses(podList *corev1.PodList, podMetricses *v1be
 		for _, containerInfo := range containers {
 			qos := string(podInfo.Status.QOSClass)
 
+			// Labels map to string
+			var labelString string
+			for labelKey, labelValue := range podInfo.Labels {
+				label := labelKey + ":" + labelValue
+				labelString = labelString + label + " "
+			}
+			labelString = strings.TrimSpace(labelString)
+
 			// Resources requested
 			requestCPUCores := float64(containerInfo.Resources.Requests.Cpu().MilliValue()) / 1000
 			requestMemoryBytes := float64(containerInfo.Resources.Requests.Memory().MilliValue()) / 1000
@@ -179,6 +201,7 @@ func buildEnrichedContainerMetricses(podList *corev1.PodList, podMetricses *v1be
 				Node:               nodeName,
 				Container:          containerInfo.Name,
 				Pod:                podInfo.Name,
+				Labels:             labelString,
 				Qos:                qos,
 				Phase:              string(podInfo.Status.Phase),
 				Namespace:          podInfo.Namespace,
@@ -194,4 +217,13 @@ func buildEnrichedContainerMetricses(podList *corev1.PodList, podMetricses *v1be
 	}
 
 	return containerMetricses
+}
+
+func itemExists(items []string, item string) bool {
+	for _, eachItem := range items {
+		if eachItem == item {
+			return true
+		}
+	}
+	return false
 }
