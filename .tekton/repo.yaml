@@ -1,0 +1,10 @@
+## DOCS:
+## https://pipelinesascode.com/docs/guide/repositorycrd/#concurrency
+apiVersion: pipelinesascode.tekton.dev/v1alpha1
+kind: Repository
+metadata:
+  name: kube-eagle
+  namespace: homelab
+spec:
+  url: "https://github.com/ArthurVardevanyan/kube-eagle"
+  concurrency_limit: 3

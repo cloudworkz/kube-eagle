@@ -1,6 +1,7 @@
 package kubernetes
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -67,7 +68,7 @@ func NewClient(opts *options.Options) (*Client, error) {
 
 // NodeList returns a list of all known nodes in a kubernetes cluster
 func (c *Client) NodeList() (*corev1.NodeList, error) {
-	nodeList, err := c.apiClient.CoreV1().Nodes().List(metav1.ListOptions{})
+	nodeList, err := c.apiClient.CoreV1().Nodes().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		return nil, err
 	}
@@ -77,7 +78,7 @@ func (c *Client) NodeList() (*corev1.NodeList, error) {
 
 // PodList returns a list of all known pods in a kubernetes cluster
 func (c *Client) PodList() (*corev1.PodList, error) {
-	podList, err := c.apiClient.CoreV1().Pods(metav1.NamespaceAll).List(metav1.ListOptions{})
+	podList, err := c.apiClient.CoreV1().Pods(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		return nil, err
 	}
@@ -87,7 +88,7 @@ func (c *Client) PodList() (*corev1.PodList, error) {
 
 // PodMetricses returns all pods' usage metrics
 func (c *Client) PodMetricses() (*v1beta1.PodMetricsList, error) {
-	podMetricses, err := c.metricsClient.MetricsV1beta1().PodMetricses(metav1.NamespaceAll).List(metav1.ListOptions{})
+	podMetricses, err := c.metricsClient.MetricsV1beta1().PodMetricses(metav1.NamespaceAll).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		return nil, err
 	}
@@ -97,7 +98,7 @@ func (c *Client) PodMetricses() (*v1beta1.PodMetricsList, error) {
 
 // NodeMetricses returns all nodes' usage metrics
 func (c *Client) NodeMetricses() (*v1beta1.NodeMetricsList, error) {
-	nodeMetricses, err := c.metricsClient.MetricsV1beta1().NodeMetricses().List(metav1.ListOptions{})
+	nodeMetricses, err := c.metricsClient.MetricsV1beta1().NodeMetricses().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +108,7 @@ func (c *Client) NodeMetricses() (*v1beta1.NodeMetricsList, error) {
 
 // IsHealthy returns whether the kubernetes client is able to get a list of all pods
 func (c *Client) IsHealthy() bool {
-	_, err := c.apiClient.CoreV1().Pods(metav1.NamespaceSystem).List(metav1.ListOptions{})
+	_, err := c.apiClient.CoreV1().Pods(metav1.NamespaceSystem).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		log.WithFields(log.Fields{
 			"error": err.Error(),

@@ -1,0 +1,60 @@
+{
+    "workbench.colorTheme": "One Dark Pro",
+    "workbench.iconTheme": "material-icon-theme",
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": "active",
+    "workbench.editor.highlightModifiedTabs": true,
+    "editor.insertSpaces": false,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "editor.renderControlCharacters": true,
+    "editor.renderWhitespace": "all",
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[markdown]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[yaml]": {
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    "cSpell.words": [
+        "alertmanager",
+        "apimachinery",
+        "arthurvardevanyan",
+        "buildah",
+        "clientcmd",
+        "clientset",
+        "clusterrolebinding",
+        "controllerutil",
+        "corev",
+        "deepcopy",
+        "finalizers",
+        "gomod",
+        "homelab",
+        "kubebuilder",
+        "kubeconfig",
+        "Kustomization",
+        "kustomize",
+        "logrus",
+        "metav",
+        "Metricses",
+        "monitoringv",
+        "pipelinesascode",
+        "rolebinding",
+        "sirupsen",
+        "subresource",
+        "tekton",
+        "thanos",
+        "Tolerations",
+        "USERPROFILE",
+        "Vardevanyan"
+    ],
+}
