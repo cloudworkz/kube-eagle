@@ -1,5 +1,5 @@
 # build image
-FROM docker.io/golang:1.21.4-alpine3.18 as builder
+FROM registry.arthurvardevanyan.com/homelab/toolbox:latest
 RUN apk update && apk add git ca-certificates
 
 WORKDIR /app
@@ -11,5 +11,5 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o /go/
 FROM scratch
 COPY --from=builder /go/bin/kube-eagle /go/bin/kube-eagle
 
-ENV VERSION 1.1.8
+ENV VERSION 1.1.9
 ENTRYPOINT ["/go/bin/kube-eagle"]
