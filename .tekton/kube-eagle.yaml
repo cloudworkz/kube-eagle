@@ -6,11 +6,11 @@ metadata:
   annotations:
     pipelinesascode.tekton.dev/max-keep-runs: "1"
     pipelinesascode.tekton.dev/on-cel-expression: |
-      event == "pull_request" && target_branch == "master"
+      event == "pull_request" && target_branch == "main"
     # event == "pull_request" &&
     pipelinesascode.tekton.dev/target-namespace: "homelab"
-    pipelinesascode.tekton.dev/task: "https://tekton-hub-api-openshift-pipelines.apps.okd.arthurvardevanyan.com/v1/resource/homelab/task/git-clone/0.9.1/raw"
-    pipelinesascode.tekton.dev/task-1: "https://tekton-hub-api-openshift-pipelines.apps.okd.arthurvardevanyan.com/v1/resource/homelab/task/buildah/0.5.1/raw"
+    pipelinesascode.tekton.dev/task: "https://raw.githubusercontent.com/ArthurVardevanyan/HomeLab/main/tekton/tasks/git-clone/0.9.1/git-clone.yaml"
+    pipelinesascode.tekton.dev/task-1: "https://raw.githubusercontent.com/ArthurVardevanyan/HomeLab/main/tekton/tasks/buildah/0.5.1/buildah.yaml"
 
 spec:
   params:

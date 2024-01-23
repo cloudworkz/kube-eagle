@@ -1,0 +1,43 @@
+repos:
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: dab7d0292ad7ebc52c7adfcad755f92e2f7c9a9a #v8.18.1
+    hooks:
+      - id: gitleaks
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: 4de1378e4cd853bfc2b111b05fff35e2dbf809a3 #v0.9.0.5
+    hooks:
+      - id: shellcheck
+  # - repo: https://github.com/adrienverge/yamllint.git
+  #   rev: v1.33.0
+  #   hooks:
+  #     - id: yamllint
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: 07fd005463366385a8b0fa97c8d2a25b5bac19e0 # v3.1.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: []
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: 3f18b949d53ffddafc6d98373366533d61e00da8 #v0.37.0
+    hooks:
+      - id: markdownlint
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: ffb6a759a979008c0e6dff86e39f4745a2d9eac4 #"v3.1.0"
+    hooks:
+      - id: prettier
+  - repo: https://github.com/bridgecrewio/checkov.git
+    rev: 73e0ecc705cc87f639def2496403839abbafa6e6 #"3.1.43"
+    hooks:
+      - id: checkov
+  # v3.1.0 https://api.github.com/repos/compilerla/conventional-pre-commit/tags
+  # - repo: https://github.com/ansible/ansible-lint.git
+  #   rev: v6.22.1
+  #   hooks:
+  #     - id: ansible-lint
+  #       files: \.(yaml|yml)$
+  #       name: Ansible Lint
+  #       description: Run configurations on .ansible-lint file
+  #       entry: python3 -m ansiblelint --force-color
+  #       always_run: false
+  #       additional_dependencies:
+  #         - "jmespath"
