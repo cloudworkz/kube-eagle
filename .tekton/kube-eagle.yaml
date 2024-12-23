@@ -10,6 +10,7 @@ metadata:
     # event == "pull_request" &&
     pipelinesascode.tekton.dev/target-namespace: "homelab"
     pipelinesascode.tekton.dev/task: "https://raw.githubusercontent.com/ArthurVardevanyan/HomeLab/main/tekton/tasks/git-clone/0.9.1/git-clone.yaml"
+    pipelinesascode.tekton.dev/task-1: "https://raw.githubusercontent.com/ArthurVardevanyan/HomeLab/main/tekton/base/clair-action/clair-action-task.yaml"
 spec:
   params:
     - name: git-url
@@ -23,6 +24,11 @@ spec:
         type: string
       - name: git-commit
         type: string
+
+    results:
+      - description: The common vulnerabilities and exposures (CVE) result
+        name: SCAN_OUTPUT
+        value: $(tasks.clair-action.results.SCAN_OUTPUT)
 
     workspaces:
       - name: data
@@ -53,6 +59,8 @@ spec:
         params:
           - name: revision
             value: $(params.git-commit)
+        results:
+          - name: IMAGE
         taskSpec:
           workspaces:
             - name: output
@@ -90,6 +98,8 @@ spec:
                   value: $(params.revision)
                 - name: WORKSPACE_DATA_PATH
                   value: $(workspaces.output.path)
+                - name: WORKSPACE_RESULTS_PATH
+                  value: $(results.IMAGE.path)
               volumeMounts:
                 - name: cache
                   mountPath: /tmp
@@ -107,6 +117,15 @@ spec:
                   exit 1
                 fi
 
+      - name: clair-action
+        runAfter:
+          - test-build
+        taskRef:
+          name: clair-action
+          kind: Task
+        params:
+          - name: IMAGE
+            value: $(tasks.test-build.results.IMAGE)
   serviceAccountName: pipeline
   workspaces:
     - name: data
@@ -121,7 +140,7 @@ spec:
           resources:
             requests:
               storage: "200Mi"
-          storageClassName: rook-ceph-block
+          storageClassName: rook-ceph-block-ci
     - name: git_auth_secret
       secret:
         secretName: "{{ git_auth_secret }}"
